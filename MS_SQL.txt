@@ -1,0 +1,70 @@
+Удаляет 0-вой байт (0x00):
+
+,REPLACE([Тех_инф]) COLLATE Latin1_General_BIN, NCHAR(0x00) COLLATE Latin1_General_BIN, '') as [Тех_инф]
+
+----------------------------------------------------------------------------------------------------------------
+
+,TRY_PARSE([column_1] as datetime2 using 'ru-Ru') between '2021-01-01' AND '2022-01-01'
+,TRY_CAST([app_id] as nvarchar(255)) as [app_id]
+
+----------------------------------------------------------------------------------------------------------------
+
+,NULL as [column_1]   - создает NULL-овое поле
+
+----------------------------------------------------------------------------------------------------------------
+
+alter table [SandBox_DB].[Schema].[table_name]
+alter column [col_1] as datetime
+alter column [col_2] as nvarchar(50)
+
+
+alter table [SandBox_DB].[Schema].[table_name] add col_name nvarchar(255)
+
+delete from [SandBox_DB].[Schema].[table_name]
+WHERE 1=1 AND [col_1] = 'System' AND [col_2] is NULL
+
+
+----------------------------------------------------------------------------------------------------------------
+
+,parsename(replace([ФИО],' ', '.'), 3) as [famName]
+,parsename(replace([ФИО],' ', '.'), 2) as [firstName]
+,parsename(replace([ФИО],' ', '.'), 1) as [SecondName]
+
+----------------------------------------------------------------------------------------------------------------
+Инфоомация по полям таблицы
+
+SELECT *
+   FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE TABLE_NAME = 'table name'  --без скобочек, просто имя таблицы
+   ORDER BY ORDINAL_POSITION
+
+----------------------------------------------------------------------------------------------------------------
+
+,LEFT(SUBSTRING([comments], PATINDEX('%убыток №%', [comments]) + 6, 100), 10) as [убыток]
+
+CASE WHEN [убыток] LIKE '%[^0-9]%' THEN 'Nan' 
+ELSE [убыток]
+END [убыток_final]
+
+
+STUFF  -  Функция STUFF вставляет одну строку в другую. Она удаляет указанное количество символов первой строки в начальной позиции и вставляет на их место вторую строку.
+удаляет последовательность символов из исходной строки и затем вставляет другую последовательность символов в исходную строку, начиная с указанной позиции.
+STUFF( source_string, start, length, add_string ) 
+
+PATINDEX - возвращают местоположение шаблона в строке. Поиск не чувствителен к регистру.
+PATINDEX( '%pattern%', string )
+
+----------------------------------------------------------------------------------------------------------------
+
+,max([Some_DATE]) OVER (PARTITION BY [NUM_dog] ORDER BY [NUM_dog] ) as maxDate_dogovora
+,ROW_NUMBER() OVER (PPARTITION BY [NUM_dog], [Some_DATE] ORDER BY [NUM_dog], [Some_DATE]) as rn
+
+
+----------------------------------------------------------------------------------------------------------------
+НУмеруем строки по признаку, когда поля дат в строках по убыванию
+
+case when initiator_type = 'Operator' THEN ROW_NUMBER() OVER (PARTITION BY [req_id], [initiator_type] order by [index_num]) else NULL END rn_oper
+
+
+
+

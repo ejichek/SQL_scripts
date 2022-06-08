@@ -1,0 +1,35 @@
+set hive.auto.convert.join=False;
+set hive.auto.convert.join.noconditionaltask=false;
+set mapreduse.job.running.map.limit=6;
+set mapreduse.job.running.reduce.limit=6;
+
+-------------------------------------------------------------------------------------------------------------------
+
+use SandBox_DB;
+show tables;
+
+show columns FROM SandBox_DB.table_name
+
+-------------------------------------------------------------------------------------------------------------------
+
+cast (t1.birth_dt) as date = from_unixtime(unixtimestamp(t1.birthDay, 'dd.MM.yyyy HH:m'), 'yyyy-MM-dd')
+
+-------------------------------------------------------------------------------------------------------------------
+* - лучше не использовать, а задавать явно
+
+CREATE TABLE SandBox_DB.table_name as 
+SELECT * FROM (
+SELECT * FROM SandBox_DB.t1
+UNION ALL
+SELECT * FROM SandBox_DB.t2 
+) as BIG_T
+
+-------------------------------------------------------------------------------------------------------------------
+
+insert overwrite directory '/user/19397737_sbrf/table_name' stored as parquet
+SELECT t1.col_1
+       t1.col_2
+FROM TABLE SandBox_DB.table_name as t1
+WHERE 1=1
+
+-------------------------------------------------------------------------------------------------------------------
